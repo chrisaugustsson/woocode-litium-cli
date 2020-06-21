@@ -12,7 +12,7 @@ export default class CreateFile extends Command {
         var project = new Project(rootDir, projectName)
         var data = JSON.stringify(project)
         try {
-            fs.writeFileSync(path.join(this.config.dataDir, `${slugify(projectName.toLowerCase())}.json)`), data)
+            fs.writeFileSync(path.join(this.config.dataDir, `${slugify(projectName.toLowerCase())}.json`), data)
         } catch (err) {
             console.log(err)
         }
