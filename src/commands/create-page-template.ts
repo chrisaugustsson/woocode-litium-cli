@@ -3,11 +3,17 @@ import cli from "cli-ux"
 import PageTemplate from "../templates/page-template"
 import * as fs from "fs-extra"
 import Project from '../templates/project-template';
+import * as path from 'path'
 
 export default class CreatePageTemplate extends Command {
     async run() {
-        var userConfig = await fs.readJSON('./config.json')
-        var projectData = await fs.readJSON(`./src/projects/${userConfig.currentProject}`)
+        var userConfig = await fs.readJSON(path.join(this.config.configDir, 'config.json'))
+        try {
+            var projectData = await fs.readJSON(path.join(this.config.dataDir, userConfig.currentProject))
+        } catch (err) {
+            console.log("Project file is missing. Create project or select different default project.")
+            return
+        }
         var project = Project.fromJSON(projectData);
         
         const templatID = await cli.prompt(
