@@ -1,17 +1,20 @@
 {
-  "name": "woocode-cli",
+  "name": "woocode-litium-cli",
   "description": "CLI tool to create Litium templates",
   "version": "0.0.0",
   "author": "Christopher Augustsson @chrisaugustsson",
   "bin": {
-    "woocode-cli": "./bin/run"
+    "woocode-cli": "bin/run"
   },
-  "bugs": "https://github.com/chrisaugustsson/woocode-cli/issues",
+  "bugs": {
+    "url": "https://github.com/chrisaugustsson/woocode-litium-cli/issues"
+  },
   "dependencies": {
     "@oclif/command": "^1.6.1",
     "@oclif/config": "^1.15.1",
     "@oclif/plugin-help": "^3.1.0",
     "@types/fs-extra": "^9.0.1",
+    "cli-ux": "^5.4.6",
     "fs-extra": "^9.0.1",
     "slugify": "^1.4.0",
     "tslib": "^1.13.0"
@@ -21,7 +24,7 @@
     "@oclif/test": "^1.2.6",
     "@types/chai": "^4.2.11",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^10.17.26",
+    "@types/node": "^12.12.6",
     "chai": "^4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-oclif": "^3.1.0",
@@ -34,7 +37,7 @@
     "typescript": "^3.9.5"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=12.0.0"
   },
   "files": [
     "/bin",
@@ -42,7 +45,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/chrisaugustsson/woocode-cli",
+  "homepage": "https://github.com/chrisaugustsson/woocode-litium-cli",
   "keywords": [
     "oclif"
   ],
@@ -55,7 +58,10 @@
       "@oclif/plugin-help"
     ]
   },
-  "repository": "chrisaugustsson/woocode-cli",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisaugustsson/woocode-litium-cli.git"
+  },
   "scripts": {
     "postpack": "rimraf oclif.manifest.json",
     "posttest": "eslint . --ext .ts --config .eslintrc",
@@ -63,5 +69,9 @@
     "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md"
   },
-  "types": "lib/index.d.ts"
+  "types": "lib/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  }
 }
