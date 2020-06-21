@@ -1,7 +1,7 @@
 {
   "name": "woocode-litium-cli",
   "description": "CLI tool to create Litium templates",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Christopher Augustsson @chrisaugustsson",
   "bin": {
     "woocode-cli": "bin/run"
