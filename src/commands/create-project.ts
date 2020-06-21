@@ -6,6 +6,8 @@ import slugify from "slugify"
 import * as path from "path"
 
 export default class CreateFile extends Command {
+    static description = "Creates a project with information about file path"
+
     async run() {
         const rootDir : string = await cli.prompt('Enter the root path to your project')
         const projectName : string = await cli.prompt("Enter project name")

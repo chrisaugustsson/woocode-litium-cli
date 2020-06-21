@@ -6,7 +6,6 @@ class PageTemplate {
     private readonly templateID:string
     private readonly templateNameEng:string
     private readonly templateNameSwe:string
-
     private readonly pageTemplateFilePath:string
     private readonly className:string
     private readonly pageNameConstantsFilePath:string

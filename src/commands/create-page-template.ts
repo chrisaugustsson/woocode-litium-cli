@@ -6,6 +6,8 @@ import Project from '../templates/project-template';
 import * as path from 'path'
 
 export default class CreatePageTemplate extends Command {
+    static description = 'Creates a page template and updates Administration files'
+
     async run() {
         var userConfig = await fs.readJSON(path.join(this.config.configDir, 'config.json'))
         try {
@@ -20,10 +22,10 @@ export default class CreatePageTemplate extends Command {
             "Enter ID of template (MyPageTemplate)"
             )
         const templateNameEng = await cli.prompt(
-            "Enter English name for template"
+            "Enter English name for template (My page template)"
         )
         const templateNameSwe = await cli.prompt(
-            "Enter Swedish name for template"
+            "Enter Swedish name for template (Min sidomall)"
         )
 
         const pageTemplate = new PageTemplate(
@@ -36,9 +38,13 @@ export default class CreatePageTemplate extends Command {
             project.getCsprojFilePath()
         )
 
-        await pageTemplate.createTemplateFile()
-        await pageTemplate.updateAdmin()
-        await pageTemplate.updateCsProj()
-        await pageTemplate.updatePageNameConstants()
+        try {
+            await pageTemplate.createTemplateFile()
+            await pageTemplate.updateAdmin()
+            await pageTemplate.updateCsProj()
+            await pageTemplate.updatePageNameConstants()
+        } catch (err) {
+            console.log(err)
+        }
     }
 }
