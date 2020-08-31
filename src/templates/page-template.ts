@@ -11,6 +11,11 @@ class PageTemplate {
     private readonly pageNameConstantsFilePath:string
     private readonly adminFilePath:string
     private readonly csprojFilePath:string
+    private readonly fieldDefintionEngFile:string
+    private readonly fieldDefintionSweFile:string
+    private readonly templateFilePath:string
+
+
 
     constructor(
         templateID:string, 
@@ -19,7 +24,10 @@ class PageTemplate {
         filePath:string, 
         pageNameConstatsFilePath:string, 
         adminFilePath:string,
-        csprojFilePath:string) {
+        csprojFilePath:string,
+        fieldDefintionEngFile:string,
+        fieldDefintionSweFile:string,
+        templateFilePath:string) {
             this.templateID = templateID;
             this.templateNameEng = templateNameEng
             this.templateNameSwe = templateNameSwe
@@ -29,6 +37,9 @@ class PageTemplate {
             this.pageNameConstantsFilePath = pageNameConstatsFilePath
             this.adminFilePath = adminFilePath
             this.csprojFilePath = csprojFilePath
+            this.fieldDefintionEngFile = fieldDefintionEngFile
+            this.fieldDefintionSweFile = fieldDefintionSweFile
+            this.templateFilePath = templateFilePath
     }
 
     async updateAdmin() {
@@ -36,25 +47,13 @@ class PageTemplate {
             "File path missing: " + this.adminFilePath
         )
 
-        var fieldDefinitionEng = 
-`  <data name="fieldtemplate.websitearea.${this.templateID.toLowerCase()}.name" xml:space="preserve">
-    <value>${this.templateNameEng}</value>
-  </data>
-  <data name="fieldtemplate.websitearea.${this.templateID.toLowerCase()}.fieldgroup.general.name" xml:space="preserve">
-    <value>General</value>
-  </data>
-</root>
-`
+        var fieldDefinitionEng = (await fs.readFile(this.fieldDefintionEngFile)).toString();
+        fieldDefinitionEng = fieldDefinitionEng.replace("{templateID}", this.templateID.toLowerCase());
+        fieldDefinitionEng = fieldDefinitionEng.replace("{templateNameEng}", this.templateNameEng);
 
-        var fieldDefinitionSwe = 
-`  <data name="fieldtemplate.websitearea.${this.templateID.toLowerCase()}.name" xml:space="preserve">
-    <value>${this.templateNameSwe}</value>
-  </data>
-  <data name="fieldtemplate.websitearea.${this.templateID.toLowerCase()}.fieldgroup.general.name" xml:space="preserve">
-    <value>Allmänt</value>
-  </data>
-</root>
-`
+        var fieldDefinitionSwe = (await fs.readFile(this.fieldDefintionSweFile)).toString();
+        fieldDefinitionSwe = fieldDefinitionSwe.replace("{templateID}", this.templateID.toLowerCase());
+        fieldDefinitionSwe = fieldDefinitionSwe.replace("{templateNameSwe}", this.templateNameSwe);
 
         var adminResx = await fs.readFile(this.adminFilePath + "Administration.resx")
         var newAdminResx = adminResx.toString().replace("</root>", "") + fieldDefinitionEng
@@ -105,42 +104,10 @@ class PageTemplate {
     }
 
     async createTemplateFile() {
-        var template = 
-`using System.Collections.Generic;
-using Litium.Accelerator.Constants;
-using Litium.FieldFramework;
-using Litium.Websites;
+        var template = (await fs.readFile(this.templateFilePath)).toString();
+        template = template.replace("{className}", this.className);
+        template = template.replace("{templateID}", this.templateID);
 
-namespace Litium.Accelerator.Definitions.Pages
-{
-    internal class ${this.className} : FieldTemplateSetup
-    {
-        public override IEnumerable<FieldTemplate> GetTemplates()
-        {
-            var templates = new List<FieldTemplate>
-            {
-                new PageFieldTemplate(PageTemplateNameConstants.${this.templateID})
-                {
-                    TemplatePath = "",
-                    FieldGroups = new []
-                    {
-                        new FieldTemplateFieldGroup()
-                        {
-                            Id = "General",
-                            Collapsed = false,
-                            Fields =
-                            {
-                                SystemFieldDefinitionConstants.Name,
-                                SystemFieldDefinitionConstants.Url,
-                            }
-                        }
-                    }
-                },
-            };
-            return templates;
-        }
-    }
-}`
         if(!await fs.pathExists(this.pageTemplateFilePath)) throw new Error(
             "File path missing: " + this.pageTemplateFilePath
         )

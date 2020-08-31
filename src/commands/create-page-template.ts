@@ -9,9 +9,12 @@ export default class CreatePageTemplate extends Command {
     static description = 'Creates a page template and updates Administration files'
 
     async run() {
-        var userConfig = await fs.readJSON(path.join(this.config.configDir, 'config.json'))
+        var userConfig = await fs.readJSON(path.join(this.config.configDir, 'config.json'));
+
+
         try {
-            var projectData = await fs.readJSON(path.join(this.config.dataDir, userConfig.currentProject))
+
+            var projectData = await fs.readJSON(path.join(this.config.dataDir, userConfig.currentProject));
         } catch (err) {
             console.log("Project file is missing. Create project or select different default project.")
             return
@@ -28,6 +31,20 @@ export default class CreatePageTemplate extends Command {
             "Enter Swedish name for template (Min sidomall)"
         )
 
+        var fileDefintionEngFilePath = path.join(this.config.dataDir, "templates/FieldDefinitionEng.data");
+        var fileDefintionSweFilePath = path.join(this.config.dataDir, "templates/FieldDefinitionSwe.data");
+        var templateFilepath = path.join(this.config.dataDir, "templates/Template.data");
+
+        if(!await fs.pathExists(fileDefintionEngFilePath)) throw new Error(
+            "File path missing: " + fileDefintionEngFilePath
+        )
+        if(!await fs.pathExists(fileDefintionSweFilePath)) throw new Error(
+            "File path missing: " + fileDefintionSweFilePath
+        )
+        if(!await fs.pathExists(templateFilepath)) throw new Error(
+            "File path missing: " + templateFilepath
+        )
+
         const pageTemplate = new PageTemplate(
             templatID, 
             templateNameEng, 
@@ -35,7 +52,10 @@ export default class CreatePageTemplate extends Command {
             project.getPageTemplateFilePath(),
             project.getPageNameConstantsFilePath(),
             project.getAdminFilePath(),
-            project.getCsprojFilePath()
+            project.getCsprojFilePath(),
+            fileDefintionEngFilePath,
+            fileDefintionSweFilePath,
+            templateFilepath
         )
 
         try {
