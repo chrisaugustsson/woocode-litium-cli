@@ -105,8 +105,8 @@ class PageTemplate {
 
     async createTemplateFile() {
         var template = (await fs.readFile(this.templateFilePath)).toString();
-        template = template.replace("{className}", this.className);
-        template = template.replace("{templateID}", this.templateID);
+        template = template.replace(/{className}/gi, this.className);
+        template = template.replace(/{templateID}/gi, this.templateID);
 
         if(!await fs.pathExists(this.pageTemplateFilePath)) throw new Error(
             "File path missing: " + this.pageTemplateFilePath
