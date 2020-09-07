@@ -48,12 +48,12 @@ class PageTemplate {
         )
 
         var fieldDefinitionEng = (await fs.readFile(this.fieldDefintionEngFile)).toString();
-        fieldDefinitionEng = fieldDefinitionEng.replace("{templateID}", this.templateID.toLowerCase());
-        fieldDefinitionEng = fieldDefinitionEng.replace("{templateNameEng}", this.templateNameEng);
+        fieldDefinitionEng = fieldDefinitionEng.replace(/{templateID}/gi, this.templateID.toLowerCase());
+        fieldDefinitionEng = fieldDefinitionEng.replace(/{templateNameEng}/gi, this.templateNameEng);
 
         var fieldDefinitionSwe = (await fs.readFile(this.fieldDefintionSweFile)).toString();
-        fieldDefinitionSwe = fieldDefinitionSwe.replace("{templateID}", this.templateID.toLowerCase());
-        fieldDefinitionSwe = fieldDefinitionSwe.replace("{templateNameSwe}", this.templateNameSwe);
+        fieldDefinitionSwe = fieldDefinitionSwe.replace(/{templateID}/gi, this.templateID.toLowerCase());
+        fieldDefinitionSwe = fieldDefinitionSwe.replace(/{templateNameEng}/gi, this.templateNameSwe);
 
         var adminResx = await fs.readFile(this.adminFilePath + "Administration.resx")
         var newAdminResx = adminResx.toString().replace("</root>", "") + fieldDefinitionEng
